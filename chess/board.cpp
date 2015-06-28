@@ -32,7 +32,6 @@ namespace chess
             return false;
         }
 
-
         std::vector<std::string> path;
         if(!pPiece->isMovingPossible(strFromAddr, strToAddr, path))
         {
@@ -44,6 +43,13 @@ namespace chess
         if(pBarier)
         {
             std::cout << "Barrier on path: " << pBarier->getName() << std::endl;
+            for(std::map<std::string, const Piece*>::const_iterator it = m_PiecePool.begin();
+                it != m_PiecePool.end();
+                it++)
+            {
+                const Piece* piece = it->second;
+                std::cout << "[          ] key: " << it->first << " value: " << piece->getName() << std::endl;
+            }
             return false;
         }
 
@@ -82,6 +88,7 @@ namespace chess
     {
         for(int i = 0; i < path.size(); i++)
         {
+            std::cout << path[i] << std::endl;
             std::map<std::string, const Piece*>::const_iterator it = m_PiecePool.find(path[i]);
             if(it != m_PiecePool.end())
                 return it->second;

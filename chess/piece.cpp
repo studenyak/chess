@@ -141,12 +141,23 @@ namespace chess {
         Pos fromPos(strFromAddr);
         Pos toPos(strToAddr);
 
+        int diff = abs(toPos.getX() - fromPos.getX());
+
         if(abs(toPos.getX() - fromPos.getX()) == abs(toPos.getY() - fromPos.getY()))
         {
-            for(int i = fromPos.getX() + 1; i < toPos.getX(); i++)
-                path.push_back(Pos(i,i));
-            for(int i = fromPos.getX() - 1; i > toPos.getX(); i--)
-                path.push_back(Pos(i,i));
+            if(toPos.getY() > fromPos.getY() && toPos.getX() > fromPos.getX())
+                for(int i = 1; i < diff; i++)
+                    path.push_back(Pos(fromPos.getX() + i, fromPos.getY() + i));
+            else if(toPos.getY() < fromPos.getY() && toPos.getX() < fromPos.getX())
+                for(int i = 1; i > diff; i++)
+                    path.push_back(Pos(fromPos.getX() - i, fromPos.getY() - i));
+            else if(toPos.getY() > fromPos.getY() && toPos.getX() < fromPos.getX())
+                for(int i = 1; i > diff; i++)
+                    path.push_back(Pos(fromPos.getX() - i, fromPos.getY() + i));
+            else
+                for(int i = 1; i > diff; i++)
+                    path.push_back(Pos(fromPos.getX() + i, fromPos.getY() - i));
+
             return true;
         }
         return false;
