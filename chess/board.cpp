@@ -15,13 +15,21 @@ namespace chess
     }
 
     bool Board::movePiece(const std::string &strFromAddr,
-                          const std::string &strToAddr)
+                          const std::string &strToAddr,
+                          bool bWhiteTurn)
     {
         std::map<std::string, const Piece*>::iterator it = m_PiecePool.find(strFromAddr);
         if(it == m_PiecePool.end())
         {
             std::cout << "No Piece found on this address" << std::endl;
             return false; // No Piece found on this address
+        }
+
+        const Piece* pPiece = it->second;
+        if(pPiece->isWhite() != bWhiteTurn)
+        {
+            std::cout << "Not your turn" << std::endl;
+            return false;
         }
 
         std::map<std::string, const Piece*>::iterator itTo = m_PiecePool.find(strToAddr);
@@ -31,7 +39,6 @@ namespace chess
             return false; // Address is busy
         }
 
-        const Piece* pPiece = it->second;
 
         if(!pPiece->isMovingPossible(strFromAddr, strToAddr))
         {

@@ -13,10 +13,4 @@ namespace chess
             board.setPiecePosition(it->first, it->second);
         }
     }
-
-    int BoardFiller::operator()(Board &board, const PieceBox &pieceBox)
-    {
-        return 0;
-
-    }
 }

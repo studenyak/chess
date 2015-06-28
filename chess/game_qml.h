@@ -29,6 +29,7 @@ private:
     chess::Game m_Game;
     QMap<unsigned int, QObject*> m_PiecePool;
     QObject *object;
+    const char *indexToAddr(unsigned int nIndex, std::string &strAddr);
 
 public slots:
     QObject* getPiece(unsigned int nIndex);

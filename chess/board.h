@@ -14,7 +14,8 @@ namespace chess
                               const Piece* pPiece);
 
         bool movePiece(const std::string& strFromAddr,
-                       const std::string& strToAddr);
+                       const std::string& strToAddr,
+                       bool bWhiteTurn = false);
 
         bool movePiece(unsigned int fromIndex,
                        unsigned int toIndex);

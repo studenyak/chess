@@ -21,6 +21,7 @@ namespace chess {
         virtual bool isMovingPossible(const std::string& strFromAddr,
                                       const std::string& strToAddr) const = 0;
         const char* getName() const;
+        bool isWhite() const;
 
     protected:
         bool m_bWhite;

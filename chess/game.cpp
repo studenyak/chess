@@ -4,6 +4,7 @@
 namespace chess
 {
     Game::Game()
+        : m_bWhitePlayer(true)
     {
     }
 
@@ -30,5 +31,16 @@ namespace chess
     Board &Game::getBoard()
     {
         return m_Board;
+    }
+
+    bool Game::movePiece(const std::string &strFromAddr,
+                         const std::string &strToAddr)
+    {
+        if(m_Board.movePiece(strFromAddr, strToAddr, m_bWhitePlayer))
+        {
+            m_bWhitePlayer ^= true;
+            return true;
+        }
+        return false;
     }
 }

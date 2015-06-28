@@ -13,10 +13,13 @@ namespace chess
         int start();
         int load();
         Board &getBoard();
+        bool movePiece(const std::string &strFromAddr,
+                       const std::string &strToAddr);
 
     private:
         Board m_Board;
         PieceBox m_PieceBox;
+        bool m_bWhitePlayer;
     };
 }
 #endif // GAME_H

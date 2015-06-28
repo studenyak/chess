@@ -26,8 +26,12 @@ void GameQml::load()
 
 bool GameQml::movePiece(unsigned int fromIndex, unsigned toIndex)
 {
-    chess::Board& board = m_Game.getBoard();
-    return board.movePiece(fromIndex, toIndex);
+    std::string strfromIndex;
+    indexToAddr(fromIndex, strfromIndex);
+
+    std::string strToIndex;
+    indexToAddr(toIndex, strToIndex);
+    return m_Game.movePiece(strfromIndex.c_str(), strToIndex.c_str());
 }
 
 QString GameQml::getImage(unsigned int nIndex)
@@ -43,5 +47,13 @@ QString GameQml::getImage(unsigned int nIndex)
 QObject *GameQml::getPiece(unsigned int nIndex)
 {
 
+}
+
+const char *GameQml::indexToAddr(unsigned int nIndex, std::string& strAddr)
+{
+    char letter[3] = {'a' + nIndex % 8, '8' - nIndex / 8};
+    strAddr = letter;
+
+    return strAddr.c_str();
 }
 

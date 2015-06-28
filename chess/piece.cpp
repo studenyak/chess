@@ -26,6 +26,11 @@ namespace chess {
         return pos;
     }
 
+    bool Piece::isWhite() const
+    {
+        return m_bWhite;
+    }
+
     const char *Piece::getName() const
     {
         return m_strName.c_str();

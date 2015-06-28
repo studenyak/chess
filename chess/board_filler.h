@@ -10,7 +10,6 @@ namespace chess
     {
     public:
         BoardFiller(Board& board, const PieceBox& pieceBox);
-        int operator()(Board& board, const PieceBox& pieceBox);
     };
 }
 
