@@ -36,6 +36,26 @@ namespace chess
             chAddr[1] = '7';
             m_Pool[std::string(chAddr)] = createPiece("pawn_black");
         }
+
+        m_Pool["a1"] = createPiece("rook_white");
+        m_Pool["b1"] = createPiece("knight_white");
+        m_Pool["c1"] = createPiece("bishop_white");
+        m_Pool["d1"] = createPiece("queen_white");
+        m_Pool["e1"] = createPiece("king_white");
+        m_Pool["f1"] = createPiece("bishop_white");
+        m_Pool["g1"] = createPiece("knight_white");
+        m_Pool["h1"] = createPiece("rook_white");
+
+
+        m_Pool["a8"] = createPiece("rook_black");
+        m_Pool["b8"] = createPiece("knight_black");
+        m_Pool["c8"] = createPiece("bishop_black");
+        m_Pool["d8"] = createPiece("queen_black");
+        m_Pool["e8"] = createPiece("king_black");
+        m_Pool["f8"] = createPiece("bishop_black");
+        m_Pool["g8"] = createPiece("knight_black");
+        m_Pool["h8"] = createPiece("rook_black");
+
         return m_Pool.size();
     }
 

@@ -35,7 +35,7 @@ namespace chess {
                               const std::string &strToAddr) const;
     };
 
-    class Rook : Piece
+    class Rook : public Piece
     {
     public:
         Rook(const std::string& strName = "");
@@ -43,7 +43,7 @@ namespace chess {
                               const std::string &strToAddr) const;
     };
 
-    class Knight : Piece
+    class Knight : public Piece
     {
     public:
         Knight(const std::string& strName = "");
@@ -51,7 +51,7 @@ namespace chess {
                               const std::string &strToAddr) const;
     };
 
-    class Bishop : Piece
+    class Bishop : public Piece
     {
     public:
         Bishop(const std::string& strName = "");
@@ -59,7 +59,7 @@ namespace chess {
                               const std::string &strToAddr) const;
     };
 
-    class Queen : Piece
+    class Queen : public Piece
     {
     public:
         Queen(const std::string& strName = "");
@@ -67,7 +67,7 @@ namespace chess {
                               const std::string &strToAddr) const;
     };
 
-    class King : Piece
+    class King : public Piece
     {
     public:
         King(const std::string& strName = "");

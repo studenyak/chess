@@ -52,10 +52,96 @@ namespace chess {
         return true;
     }
 
+    Rook::Rook(const std::string &strName) : Piece(strName){}
+    bool Rook::isMovingPossible(const std::string &strFromAddr,
+                                 const std::string &strToAddr) const
+    {
+        Pos fromPos = strAddrToPos(strFromAddr);
+        Pos toPos = strAddrToPos(strToAddr);
+
+        if( toPos.x == fromPos.x || toPos.y == fromPos.y)
+            return true;
+        return false;
+    }
+
+    Knight::Knight(const std::string &strName) : Piece(strName){}
+    bool Knight::isMovingPossible(const std::string &strFromAddr,
+                                 const std::string &strToAddr) const
+    {
+        Pos fromPos = strAddrToPos(strFromAddr);
+        Pos toPos = strAddrToPos(strToAddr);
+
+        if(abs(toPos.x - fromPos.x) == 2 && abs(toPos.y - fromPos.y) == 1 )
+            return true;
+        if(abs(toPos.y - fromPos.y) == 2 && abs(toPos.x - fromPos.x) == 1 )
+            return true;
+
+        return false;
+    }
+
+    Bishop::Bishop(const std::string &strName) : Piece(strName){}
+    bool Bishop::isMovingPossible(const std::string &strFromAddr,
+                                 const std::string &strToAddr) const
+    {
+        Pos fromPos = strAddrToPos(strFromAddr);
+        Pos toPos = strAddrToPos(strToAddr);
+
+        if(abs(toPos.x - fromPos.x) == abs(toPos.y - fromPos.y))
+            return true;
+        return false;
+    }
+
+    Queen::Queen(const std::string &strName) : Piece(strName){}
+    bool Queen::isMovingPossible(const std::string &strFromAddr,
+                                 const std::string &strToAddr) const
+    {
+        Pos fromPos = strAddrToPos(strFromAddr);
+        Pos toPos = strAddrToPos(strToAddr);
+
+        if(abs(toPos.x - fromPos.x) == abs(toPos.y - fromPos.y))
+            return true;
+        if( toPos.x == fromPos.x || toPos.y == fromPos.y)
+            return true;
+
+        return false;
+    }
+
+    King::King(const std::string &strName)
+        : Piece(strName)
+    {}
+
+    bool King::isMovingPossible(const std::string &strFromAddr,
+                                 const std::string &strToAddr) const
+    {
+        Pos fromPos = strAddrToPos(strFromAddr);
+        Pos toPos = strAddrToPos(strToAddr);
+
+        if(abs(toPos.x - fromPos.x) > 1)
+            return false;
+        if(abs(toPos.y - fromPos.y) > 1)
+            return false;
+
+        return true;
+    }
+
+
+
+
+
     Piece *createPiece(const std::string &strPieceType)
     {
         if(strPieceType.find("pawn") != std::string::npos)
             return new Pawn(strPieceType);
+        if(strPieceType.find("rook") != std::string::npos)
+            return new Rook(strPieceType);
+        if(strPieceType.find("knight") != std::string::npos)
+            return new Knight(strPieceType);
+        if(strPieceType.find("bishop") != std::string::npos)
+            return new Bishop(strPieceType);
+        if(strPieceType.find("queen") != std::string::npos)
+            return new Queen(strPieceType);
+        if(strPieceType.find("king") != std::string::npos)
+            return new King(strPieceType);
         return 0;
     }
 
