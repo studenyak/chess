@@ -26,9 +26,19 @@ Window {
         text: "Start"
         anchors.top: parent
         onClicked: {
-            game.start()
-            for(var index = 0; index < 64; index++)
-                rep_img_pool.itemAt(index).source = game.getImage(index);
+            if(start_btn.text == "Start"){
+                game.start()
+                for(var index = 0; index < 64; index++)
+                    rep_img_pool.itemAt(index).source = game.getImage(index);
+                start_btn.text = "Stop"
+                load_btn.text = "Save"
+            }
+            else{
+                for(var index = 0; index < 64; index++)
+                    rep_img_pool.itemAt(index).source = "";
+                start_btn.text = "Start"
+                load_btn.text = "Load"
+            }
         }
     }
 
@@ -103,7 +113,6 @@ Window {
                           }
                           else
                               console.log("move is inpossible")
-//                           game.saveMove();
                             rep.itemAt(board.fromIndex).border.width = 0;
                             board.fromIndex = -1;
                           }
