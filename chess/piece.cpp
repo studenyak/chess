@@ -5,8 +5,11 @@
 namespace chess {
 
     Pos::Pos():m_nX(0), m_nY(0){}
-    Pos::Pos(int x, int y):m_nX(x), m_nY(y){}
-    Pos::Pos(const std::string& strAddr)
+    Pos::Pos(int x, int y):m_nX(x), m_nY(y)
+    {
+
+    }
+    Pos::Pos(const std::string &strAddr)
         : m_nX(0)
         , m_nY(0)
     {
@@ -20,8 +23,15 @@ namespace chess {
             m_nY = -1;
     }
 
-    std::string &Pos::operator()()
+    chess::Pos::operator std::string()
     {
+        char chPos[3] = {0};
+        if(m_nX >= 8 || m_nX < 0 || m_nY >= 8 || m_nY < 0)
+            return "";
+
+        chPos[0] = m_nX + 0x61;
+        chPos[1] = m_nY + 0x31;
+        m_strAddr.assign(chPos);
         return m_strAddr;
     }
 
@@ -65,12 +75,15 @@ namespace chess {
     {
         Pos fromPos(strFromAddr);
         Pos toPos(strToAddr);
-        if(fromPos.getX() != toPos.getX())
+        int diffY = abs(toPos.getY() - fromPos.getY());
+        int diffX = abs(toPos.getX() - fromPos.getX());
+        if(diffX)
             return false;
 
-        if(abs(toPos.getY() - fromPos.getY()) > 1)
+        if(diffY > 1)
             return false;
 
+        path.push_back(strToAddr);
         return true;
     }
 
@@ -83,9 +96,23 @@ namespace chess {
         Pos toPos(strToAddr);
 
         if( toPos.getX() == fromPos.getX() )
+        {
+            for(int y = fromPos.getY() + 1; y < toPos.getY(); y++)
+                path.push_back(Pos(toPos.getX(), y));
+            for(int y = fromPos.getY() - 1; y > toPos.getY(); y--)
+                path.push_back(Pos(toPos.getX(), y));
             return true;
+        }
+
         if( toPos.getY() == fromPos.getY())
+        {
+            for(int x = fromPos.getX() + 1; x < toPos.getX(); x++)
+                path.push_back(Pos(x, toPos.getY()));
+            for(int x = fromPos.getX() - 1; x > toPos.getX(); x--)
+                path.push_back(Pos(x, toPos.getY()));
             return true;
+        }
+
         return false;
     }
 
@@ -102,6 +129,7 @@ namespace chess {
         if(abs(toPos.getY() - fromPos.getY()) == 2 && abs(toPos.getX() - fromPos.getX()) == 1 )
             return true;
 
+        path.push_back(strToAddr);
         return false;
     }
 
@@ -114,7 +142,13 @@ namespace chess {
         Pos toPos(strToAddr);
 
         if(abs(toPos.getX() - fromPos.getX()) == abs(toPos.getY() - fromPos.getY()))
+        {
+            for(int i = fromPos.getX() + 1; i < toPos.getX(); i++)
+                path.push_back(Pos(i,i));
+            for(int i = fromPos.getX() - 1; i > toPos.getX(); i--)
+                path.push_back(Pos(i,i));
             return true;
+        }
         return false;
     }
 
@@ -123,15 +157,8 @@ namespace chess {
                                  const std::string &strToAddr,
                                  std::vector<std::string>& path) const
     {
-        Pos fromPos(strFromAddr);
-        Pos toPos(strToAddr);
-
-        if(abs(toPos.getX() - fromPos.getX()) == abs(toPos.getY() - fromPos.getY()))
-            return true;
-        if( toPos.getX() == fromPos.getX() || toPos.getY() == fromPos.getY())
-            return true;
-
-        return false;
+        return Bishop::isMovingPossible(strFromAddr, strToAddr, path) ||
+                Rook::isMovingPossible(strFromAddr, strToAddr, path);
     }
 
     King::King(const std::string &strName)
@@ -150,6 +177,7 @@ namespace chess {
         if(abs(toPos.getY() - fromPos.getY()) > 1)
             return false;
 
+        path.push_back(strToAddr);
         return true;
     }
 

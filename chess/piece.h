@@ -12,9 +12,8 @@ namespace chess {
         Pos();
         Pos(int x, int y);
         Pos(const std::string& strAddr);
-        Pos(const char* chAddr);
         std::string toStringAddr();
-        std::string &operator()();
+        operator std::string();
         int getX();
         int getY();
     private:
@@ -48,7 +47,7 @@ namespace chess {
                               std::vector<std::string> &path) const;
     };
 
-    class Rook : public Piece
+    class Rook : public virtual Piece
     {
     public:
         Rook(const std::string& strName = "");
@@ -66,7 +65,7 @@ namespace chess {
                               std::vector<std::string>& path) const;
     };
 
-    class Bishop : public Piece
+    class Bishop : public virtual Piece
     {
     public:
         Bishop(const std::string& strName = "");
@@ -75,7 +74,7 @@ namespace chess {
                               std::vector<std::string>& path) const;
     };
 
-    class Queen : public Piece
+    class Queen : public Rook, public Bishop
     {
     public:
         Queen(const std::string& strName = "");

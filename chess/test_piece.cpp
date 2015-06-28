@@ -47,8 +47,25 @@ TEST(Piece, strAddrToPos)
 
     pos = Pos(std::string("h8"));
     EXPECT_EQ(pos.getX(), 7);EXPECT_EQ(pos.getY(), 7);
-
-
 }
+
+TEST(Piece, PosToStrAddr)
+{
+    std::string strAddr = Pos(0,0);
+    EXPECT_STREQ(strAddr.c_str(), "a1");
+
+    strAddr = Pos(0,7);
+    EXPECT_STREQ(strAddr.c_str(), "a8");
+
+    strAddr = Pos(7,7);
+    EXPECT_STREQ(strAddr.c_str(), "h8");
+
+    strAddr = Pos(7,0);
+    EXPECT_STREQ(strAddr.c_str(), "h1");
+
+    strAddr = Pos(4,7);
+    EXPECT_STREQ(strAddr.c_str(), "e8");
+}
+
 
 #endif

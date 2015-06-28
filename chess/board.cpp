@@ -50,7 +50,7 @@ namespace chess
         const Piece* pBarier = barrierOnPath(path);
         if(pBarier)
         {
-            std::cout << "Barrier on path" << std::endl;
+            std::cout << "Barrier on path: " << pBarier->getName() << std::endl;
             return false;
         }
 
