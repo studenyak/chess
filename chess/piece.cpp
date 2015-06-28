@@ -4,26 +4,42 @@
 
 namespace chess {
 
+    Pos::Pos():m_nX(0), m_nY(0){}
+    Pos::Pos(int x, int y):m_nX(x), m_nY(y){}
+    Pos::Pos(const std::string& strAddr)
+        : m_nX(0)
+        , m_nY(0)
+    {
+        m_strAddr = strAddr;
+        const char* chPos = m_strAddr.c_str();
+        m_nX = chPos[0] - 0x61;
+        if(m_nX >= 8 || m_nX < 0)
+            m_nX = -1;
+        m_nY = chPos[1] - 0x31;
+        if(m_nY >= 8 || m_nY < 0)
+            m_nY = -1;
+    }
+
+    std::string &Pos::operator()()
+    {
+        return m_strAddr;
+    }
+
+    int Pos::getX()
+    {
+        return m_nX;
+    }
+    int Pos::getY()
+    {
+        return m_nY;
+    }
+
     Piece::Piece(const std::string &strName)
         : m_bWhite(true)
         , m_strName(strName)
     {
         if(strName.find("white") == std::string::npos)
             m_bWhite = false;
-    }
-
-    Pos strAddrToPos(const std::string& strAddr)
-    {
-        Pos pos = {0,0};
-        const char* chPos = strAddr.c_str();
-        pos.x = chPos[0] - 0x61;
-        if(pos.x >= 8 || pos.x < 0)
-            pos.x = -1;
-        pos.y = chPos[1] - 0x31;
-        if(pos.y >= 8 || pos.y < 0)
-            pos.y = -1;
-
-        return pos;
     }
 
     bool Piece::isWhite() const
@@ -44,14 +60,15 @@ namespace chess {
     {}
 
     bool Pawn::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr) const
+                                const std::string &strToAddr,
+                                std::vector<std::string>& path) const
     {
-        Pos fromPos = strAddrToPos(strFromAddr);
-        Pos toPos = strAddrToPos(strToAddr);
-        if(fromPos.x != toPos.x)
+        Pos fromPos(strFromAddr);
+        Pos toPos(strToAddr);
+        if(fromPos.getX() != toPos.getX())
             return false;
 
-        if(abs(toPos.y - fromPos.y) > 1)
+        if(abs(toPos.getY() - fromPos.getY()) > 1)
             return false;
 
         return true;
@@ -59,26 +76,30 @@ namespace chess {
 
     Rook::Rook(const std::string &strName) : Piece(strName){}
     bool Rook::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr) const
+                                 const std::string &strToAddr,
+                                std::vector<std::string>& path) const
     {
-        Pos fromPos = strAddrToPos(strFromAddr);
-        Pos toPos = strAddrToPos(strToAddr);
+        Pos fromPos(strFromAddr);
+        Pos toPos(strToAddr);
 
-        if( toPos.x == fromPos.x || toPos.y == fromPos.y)
+        if( toPos.getX() == fromPos.getX() )
+            return true;
+        if( toPos.getY() == fromPos.getY())
             return true;
         return false;
     }
 
     Knight::Knight(const std::string &strName) : Piece(strName){}
     bool Knight::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr) const
+                                 const std::string &strToAddr,
+                                  std::vector<std::string>& path) const
     {
-        Pos fromPos = strAddrToPos(strFromAddr);
-        Pos toPos = strAddrToPos(strToAddr);
+        Pos fromPos(strFromAddr);
+        Pos toPos(strToAddr);
 
-        if(abs(toPos.x - fromPos.x) == 2 && abs(toPos.y - fromPos.y) == 1 )
+        if(abs(toPos.getX() - fromPos.getX()) == 2 && abs(toPos.getY() - fromPos.getY()) == 1 )
             return true;
-        if(abs(toPos.y - fromPos.y) == 2 && abs(toPos.x - fromPos.x) == 1 )
+        if(abs(toPos.getY() - fromPos.getY()) == 2 && abs(toPos.getX() - fromPos.getX()) == 1 )
             return true;
 
         return false;
@@ -86,26 +107,28 @@ namespace chess {
 
     Bishop::Bishop(const std::string &strName) : Piece(strName){}
     bool Bishop::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr) const
+                                 const std::string &strToAddr,
+                                  std::vector<std::string> &path) const
     {
-        Pos fromPos = strAddrToPos(strFromAddr);
-        Pos toPos = strAddrToPos(strToAddr);
+        Pos fromPos(strFromAddr);
+        Pos toPos(strToAddr);
 
-        if(abs(toPos.x - fromPos.x) == abs(toPos.y - fromPos.y))
+        if(abs(toPos.getX() - fromPos.getX()) == abs(toPos.getY() - fromPos.getY()))
             return true;
         return false;
     }
 
     Queen::Queen(const std::string &strName) : Piece(strName){}
     bool Queen::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr) const
+                                 const std::string &strToAddr,
+                                 std::vector<std::string>& path) const
     {
-        Pos fromPos = strAddrToPos(strFromAddr);
-        Pos toPos = strAddrToPos(strToAddr);
+        Pos fromPos(strFromAddr);
+        Pos toPos(strToAddr);
 
-        if(abs(toPos.x - fromPos.x) == abs(toPos.y - fromPos.y))
+        if(abs(toPos.getX() - fromPos.getX()) == abs(toPos.getY() - fromPos.getY()))
             return true;
-        if( toPos.x == fromPos.x || toPos.y == fromPos.y)
+        if( toPos.getX() == fromPos.getX() || toPos.getY() == fromPos.getY())
             return true;
 
         return false;
@@ -116,22 +139,19 @@ namespace chess {
     {}
 
     bool King::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr) const
+                                 const std::string &strToAddr,
+                                std::vector<std::string>& path) const
     {
-        Pos fromPos = strAddrToPos(strFromAddr);
-        Pos toPos = strAddrToPos(strToAddr);
+        Pos fromPos(strFromAddr);
+        Pos toPos(strToAddr);;
 
-        if(abs(toPos.x - fromPos.x) > 1)
+        if(abs(toPos.getX() - fromPos.getX()) > 1)
             return false;
-        if(abs(toPos.y - fromPos.y) > 1)
+        if(abs(toPos.getY() - fromPos.getY()) > 1)
             return false;
 
         return true;
     }
-
-
-
-
 
     Piece *createPiece(const std::string &strPieceType)
     {

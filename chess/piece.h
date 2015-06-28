@@ -2,16 +2,26 @@
 #define PIECE_H
 
 #include <string>
+#include <vector>
 
 namespace chess {
 
-    struct Pos
+    class Pos
     {
-        int x;
-        int y;
+    public:
+        Pos();
+        Pos(int x, int y);
+        Pos(const std::string& strAddr);
+        Pos(const char* chAddr);
+        std::string toStringAddr();
+        std::string &operator()();
+        int getX();
+        int getY();
+    private:
+        int m_nX;
+        int m_nY;
+        std::string m_strAddr;
     };
-
-    Pos strAddrToPos(const std::string& strAddr);
 
     class Piece
     {
@@ -19,7 +29,8 @@ namespace chess {
         Piece(const std::string& strName = "");
         virtual ~Piece();
         virtual bool isMovingPossible(const std::string& strFromAddr,
-                                      const std::string& strToAddr) const = 0;
+                                      const std::string& strToAddr,
+                                      std::vector<std::string>& path) const = 0;
         const char* getName() const;
         bool isWhite() const;
 
@@ -33,7 +44,8 @@ namespace chess {
     public:
         Pawn(const std::string& strName = "");
         bool isMovingPossible(const std::string &strFromAddr,
-                              const std::string &strToAddr) const;
+                              const std::string &strToAddr,
+                              std::vector<std::string> &path) const;
     };
 
     class Rook : public Piece
@@ -41,7 +53,8 @@ namespace chess {
     public:
         Rook(const std::string& strName = "");
         bool isMovingPossible(const std::string &strFromAddr,
-                              const std::string &strToAddr) const;
+                              const std::string &strToAddr,
+                              std::vector<std::string>& path) const;
     };
 
     class Knight : public Piece
@@ -49,7 +62,8 @@ namespace chess {
     public:
         Knight(const std::string& strName = "");
         bool isMovingPossible(const std::string &strFromAddr,
-                              const std::string &strToAddr) const;
+                              const std::string &strToAddr,
+                              std::vector<std::string>& path) const;
     };
 
     class Bishop : public Piece
@@ -57,7 +71,8 @@ namespace chess {
     public:
         Bishop(const std::string& strName = "");
         bool isMovingPossible(const std::string &strFromAddr,
-                              const std::string &strToAddr) const;
+                              const std::string &strToAddr,
+                              std::vector<std::string>& path) const;
     };
 
     class Queen : public Piece
@@ -65,7 +80,8 @@ namespace chess {
     public:
         Queen(const std::string& strName = "");
         bool isMovingPossible(const std::string &strFromAddr,
-                              const std::string &strToAddr) const;
+                              const std::string &strToAddr,
+                              std::vector<std::string>& path) const;
     };
 
     class King : public Piece
@@ -73,7 +89,8 @@ namespace chess {
     public:
         King(const std::string& strName = "");
         bool isMovingPossible(const std::string &strFromAddr,
-                              const std::string &strToAddr) const;
+                              const std::string &strToAddr,
+                              std::vector<std::string>& path) const;
     };
 
     Piece* createPiece(const std::string& strPieceType);

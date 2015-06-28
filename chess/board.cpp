@@ -39,11 +39,19 @@ namespace chess
             return false; // Address is busy
         }
 
-
-        if(!pPiece->isMovingPossible(strFromAddr, strToAddr))
+        std::vector<std::string> path;
+        if(!pPiece->isMovingPossible(strFromAddr, strToAddr, path))
         {
             std::cout << "Movement is not possible" << std::endl;
             return false; // Movement is not possible.
+        }
+
+
+        const Piece* pBarier = barrierOnPath(path);
+        if(pBarier)
+        {
+            std::cout << "Barrier on path" << std::endl;
+            return false;
         }
 
         m_PiecePool[strToAddr] = pPiece;
@@ -67,6 +75,17 @@ namespace chess
         if(it != m_PiecePool.end())
             return m_PiecePool[strAddr]->getName();
 
+        return 0;
+    }
+
+    const Piece *Board::barrierOnPath(std::vector<std::string> &path)
+    {
+        for(int i = 0; i < path.size(); i++)
+        {
+            std::map<std::string, const Piece*>::const_iterator it = m_PiecePool.find(path[i]);
+            if(it != m_PiecePool.end())
+                return it->second;
+        }
         return 0;
     }
 

@@ -15,12 +15,13 @@ namespace chess
 
         bool movePiece(const std::string& strFromAddr,
                        const std::string& strToAddr,
-                       bool bWhiteTurn = false);
+                       bool bWhiteTurn = true);
 
         bool movePiece(unsigned int fromIndex,
                        unsigned int toIndex);
 
         const char *getPieceName(unsigned int nIndex);
+        const Piece* barrierOnPath(std::vector<std::string>& path);
         unsigned int count() const;
 
 #ifndef __GOOGLE_TEST__
