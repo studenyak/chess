@@ -32,12 +32,12 @@ public:
 
 private:
     chess::Game m_Game;
-    bool m_bSwitchFlag;
+    bool m_bSwitchDirectionFlag;
     bool m_bWhitePlayer;
     QObject* m_RootObject;
     QQueue<QString> m_wMovesQueue;
     QQueue<QString> m_rMovesQueue;
-    unsigned int m_nCurrentMoveQueueStep;
+    int m_nCurrentMoveQueueStep;
 
     const char *indexToAddr(unsigned int nIndex, std::string &strAddr);
     int addrToIndex(QString &str);

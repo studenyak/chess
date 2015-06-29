@@ -13,7 +13,7 @@
 GameQml::GameQml(QObject *parent)
     : m_nCurrentMoveQueueStep(0)
     , m_bWhitePlayer(true)
-    , m_bSwitchFlag(false)
+    , m_bSwitchDirectionFlag(false)
 {
 }
 
@@ -23,6 +23,9 @@ GameQml::~GameQml()
 
 void GameQml::start()
 {
+    m_bWhitePlayer = true;
+    m_nCurrentMoveQueueStep = 0;
+    m_bSwitchDirectionFlag = false;
     m_Game.start();
 }
 
@@ -35,6 +38,10 @@ void GameQml::load(QString strUrlFileName)
         while (!in.atEnd())
             m_rMovesQueue.enqueue(in.readLine());
         file.close();
+
+        m_bWhitePlayer = true;
+        m_nCurrentMoveQueueStep = 0;
+        m_bSwitchDirectionFlag = false;
     }
     else
         qDebug() << "Unable to load file";
@@ -102,13 +109,16 @@ void GameQml::prev()
     if(m_nCurrentMoveQueueStep > m_rMovesQueue.size())
         return;
 
-    if(!m_bSwitchFlag)
+    if(!m_bSwitchDirectionFlag)
     {
         m_nCurrentMoveQueueStep--;
-        m_bSwitchFlag = true;
+        m_bSwitchDirectionFlag = true;
         m_bWhitePlayer ^= 1;
     }
+    if(m_nCurrentMoveQueueStep <= -1)
+        return;
 
+    qDebug() << "m_nCurrentMoveQueueSte =: " << m_nCurrentMoveQueueStep;
     QString strMove = m_rMovesQueue.at(m_nCurrentMoveQueueStep);
     QStringList list = strMove.split(",");
     qDebug() << list[1] << "," << list[0];
@@ -116,11 +126,12 @@ void GameQml::prev()
     qDebug() << "White Player: " << m_bWhitePlayer;
     if(movePiece(list[1].toInt(), list[0].toInt()))
     {
-        if(m_nCurrentMoveQueueStep > 0)
+        if(m_nCurrentMoveQueueStep >= 0)
             m_nCurrentMoveQueueStep--;
     }
 
     qDebug() << "m_nCurrentMoveQueueSte =: " << m_nCurrentMoveQueueStep;
+
 }
 
 void GameQml::next()
@@ -130,13 +141,16 @@ void GameQml::next()
     if(m_nCurrentMoveQueueStep >= m_rMovesQueue.size())
         return;
 
-    if(m_bSwitchFlag)
+    if(m_bSwitchDirectionFlag)
     {
-        m_bSwitchFlag = false;
+        m_nCurrentMoveQueueStep++;
+        m_bSwitchDirectionFlag = false;
         m_bWhitePlayer ^= 1;
     }
 
     qDebug() << "White Player: " << m_bWhitePlayer;
+
+    qDebug() << "m_nCurrentMoveQueueSte =: " << m_nCurrentMoveQueueStep;
     QString strMove = m_rMovesQueue.at(m_nCurrentMoveQueueStep);
     QStringList list = strMove.split(",");
     qDebug() << list[0] << "," << list[1];
@@ -146,7 +160,7 @@ void GameQml::next()
             m_nCurrentMoveQueueStep++;
     }
 
-    qDebug() << m_nCurrentMoveQueueStep;
+    qDebug() << "m_nCurrentMoveQueueSte =: " << m_nCurrentMoveQueueStep;
 }
 
 const char *GameQml::indexToAddr(unsigned int nIndex, std::string& strAddr)
