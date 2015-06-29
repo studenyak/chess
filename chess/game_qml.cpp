@@ -1,16 +1,14 @@
-#include "game_qml.h"
-#include <QQmlEngine>
-#include <QQmlComponent>
-#include <QQuickView>
-#include <QQmlProperty>
 #include <QVariant>
 #include <QQmlEngine>
 #include <QQmlApplicationEngine>
-#include "QFile"
+#include <QFile>
 #include <QTextStream>
 #include <QMetaObject>
 #include <QChar>
-#include "QDebug"
+#include <QDebug>
+#include <QUrl>
+
+#include "game_qml.h"
 
 GameQml::GameQml(QObject *parent)
     : m_nCurrentMoveQueueStep(0)
@@ -28,15 +26,18 @@ void GameQml::start()
     m_Game.start();
 }
 
-void GameQml::load()
+void GameQml::load(QString strUrlFileName)
 {
-    QFile file("game.txt");
+    QUrl strUrl(strUrlFileName);
+    QFile file(strUrl.toLocalFile());
     if (file.open(QIODevice::ReadOnly)) {
         QTextStream in(&file);
         while (!in.atEnd())
             m_rMovesQueue.enqueue(in.readLine());
         file.close();
     }
+    else
+        qDebug() << "Unable to load file";
 }
 
 bool GameQml::movePiece(unsigned int fromIndex, unsigned toIndex)
@@ -46,6 +47,7 @@ bool GameQml::movePiece(unsigned int fromIndex, unsigned toIndex)
 
     std::string strToIndex;
     indexToAddr(toIndex, strToIndex);
+
     if( m_Game.movePiece(strfromIndex.c_str(), strToIndex.c_str(), m_bWhitePlayer) )
     {
         QString str;
@@ -72,15 +74,18 @@ QString GameQml::getImage(unsigned int nIndex)
     return QString("");
 }
 
-void GameQml::save()
+void GameQml::save(QString strUrlFileName)
 {
-    QFile file("game.txt");
+    QUrl strUrl(strUrlFileName);
+    QFile file(strUrl.toLocalFile());
     if (file.open(QIODevice::WriteOnly)) {
         QTextStream out(&file);
         while(!m_wMovesQueue.isEmpty())
             out << m_wMovesQueue.dequeue() << "\n";
         file.close();
     }
+    else
+        qDebug() << "Unable to open file " << strUrl.toLocalFile();
 }
 
 void GameQml::stop()
@@ -92,10 +97,9 @@ void GameQml::prev()
 {
     qDebug() << m_nCurrentMoveQueueStep;
 
-    if(m_nCurrentMoveQueueStep > m_rMovesQueue.size())
+    if(m_rMovesQueue.size() == 0)
         return;
-
-    if(m_nCurrentMoveQueueStep < 0)
+    if(m_nCurrentMoveQueueStep > m_rMovesQueue.size())
         return;
 
     if(!m_bSwitchFlag)
@@ -138,16 +142,11 @@ void GameQml::next()
     qDebug() << list[0] << "," << list[1];
     if( movePiece(list[0].toInt(),list[1].toInt()))
     {
-        if(m_nCurrentMoveQueueStep <= m_rMovesQueue.size() - 1)
+        if(m_nCurrentMoveQueueStep < m_rMovesQueue.size())
             m_nCurrentMoveQueueStep++;
     }
 
     qDebug() << m_nCurrentMoveQueueStep;
-}
-
-QObject *GameQml::getPiece(unsigned int nIndex)
-{
-
 }
 
 const char *GameQml::indexToAddr(unsigned int nIndex, std::string& strAddr)

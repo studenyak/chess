@@ -3,6 +3,7 @@ import QtQuick.Window 2.1
 import QtQuick.Controls 1.2
 import stood.game.chess 1.0
 import stood.game.chess.piece 1.0
+import QtQuick.Dialogs 1.0
 
 Window {
     id: main_wnd
@@ -55,17 +56,23 @@ Window {
         x: start_btn.width + 5
         text: "Load"
         anchors.bottom: parent
-        onClicked: {
-                prev_btn.visible = true;
-                next_btn.visible = true;
-                game.stop()
-                for(var index = 0; index < 64; index++)
-                    rep_img_pool.itemAt(index).source = "";
-                game.start()
-                for(var index = 0; index < 64; index++)
-                    rep_img_pool.itemAt(index).source = game.getImage(index);
-                game.load()
+        FileDialog {
+            id: loadDialog
+            title: "Please choose a file"
+            onAccepted: {
+                    game.load(loadDialog.fileUrl)
+                    prev_btn.visible = true;
+                    next_btn.visible = true;
+                    game.stop()
+                    for(var index = 0; index < 64; index++)
+                        rep_img_pool.itemAt(index).source = "";
+                    game.start()
+                    for(var index = 0; index < 64; index++)
+                        rep_img_pool.itemAt(index).source = game.getImage(index);
+            }
+            Component.onCompleted: visible = false
         }
+        onClicked: loadDialog.visible = true
     }
 
     Button {
@@ -74,7 +81,19 @@ Window {
         text: "Save"
         anchors.bottom: parent
         visible: false
-        onClicked: game.save();
+        FileDialog {
+            id: saveDialog
+            title: "Please choose a file"
+            selectExisting: false
+            onAccepted: {
+                    console.log("Saving to "+saveDialog.fileUrl)
+                    game.save(saveDialog.fileUrl)
+                }
+            Component.onCompleted: visible = false
+        }
+        onClicked: {
+            saveDialog.visible = true
+        }
     }
 
     Button {

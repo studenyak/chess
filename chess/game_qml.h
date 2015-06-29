@@ -24,8 +24,8 @@ public:
     QString getImage(unsigned int nIndex);
 
     Q_INVOKABLE void start();
-    Q_INVOKABLE void load();
-    Q_INVOKABLE void save();
+    Q_INVOKABLE void load(QString strFileName);
+    Q_INVOKABLE void save(QString strFileName);
     Q_INVOKABLE void stop();
     Q_INVOKABLE void prev();
     Q_INVOKABLE void next();
