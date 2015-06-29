@@ -4,8 +4,9 @@ namespace chess {
 
     Knight::Knight(const std::string &strName) : Piece(strName){}
     bool Knight::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr,
-                                  std::vector<std::string>& path) const
+                                  const std::string &strToAddr,
+                                  std::vector<std::string>& path,
+                                  bool bFlag) const
     {
         Pos fromPos(strFromAddr);
         Pos toPos(strToAddr);

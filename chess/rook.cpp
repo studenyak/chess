@@ -4,8 +4,8 @@ namespace chess {
 
     Rook::Rook(const std::string &strName) : Piece(strName){}
     bool Rook::isMovingPossible(const std::string &strFromAddr,
-                                 const std::string &strToAddr,
-                                std::vector<std::string>& path) const
+                                const std::string &strToAddr,
+                                std::vector<std::string>& path, bool bFlag) const
     {
         Pos fromPos(strFromAddr);
         Pos toPos(strToAddr);

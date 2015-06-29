@@ -37,8 +37,13 @@ namespace chess
             return false;
         }
 
+        bool bToAddrIsBusy = false;
+        std::map<std::string, const Piece*>::iterator itTo = m_PiecePool.find(strToAddr);
+        if(itTo != m_PiecePool.end())
+            bToAddrIsBusy = true;
+
         std::vector<std::string> path;
-        if(!pPiece->isMovingPossible(strFromAddr, strToAddr, path))
+        if(!pPiece->isMovingPossible(strFromAddr, strToAddr, path, bToAddrIsBusy))
         {
             std::cout << "Movement is not possible" << std::endl;
             return false; // Movement is not possible.
@@ -58,8 +63,7 @@ namespace chess
             return false;
         }
 
-        std::map<std::string, const Piece*>::iterator itTo = m_PiecePool.find(strToAddr);
-        if(itTo != m_PiecePool.end())
+        if(bToAddrIsBusy)
         {
             std::cout << "Kill this piece" << std::endl;
             m_PiecePool.erase(itTo);

@@ -13,7 +13,8 @@ namespace chess {
         virtual ~Piece();
         virtual bool isMovingPossible(const std::string& strFromAddr,
                                       const std::string& strToAddr,
-                                      std::vector<std::string>& path) const = 0;
+                                      std::vector<std::string>& path,
+                                      bool bFlag = false) const = 0;
         const char* getName() const;
         bool isWhite() const;
 
