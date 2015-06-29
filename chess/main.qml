@@ -10,13 +10,6 @@ Window {
     width: 360
     height: 400
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            Qt.quit();
-        }
-    }
-
     Game{
         id: game
         parent: main_wnd
@@ -27,20 +20,30 @@ Window {
         text: "Start"
         anchors.top: parent
         onClicked: {
-            if(start_btn.text == "Start"){
                 game.start()
                 for(var index = 0; index < 64; index++)
                     rep_img_pool.itemAt(index).source = game.getImage(index);
-                start_btn.text = "Stop"
-                load_btn.text = "Save"
-            }
-            else{
-                game.stop()
-                for(var index = 0; index < 64; index++)
-                    rep_img_pool.itemAt(index).source = "";
-                start_btn.text = "Start"
-                load_btn.text = "Load"
-            }
+                save_btn.visible = true
+                stop_btn.visible = true
+                start_btn.visible = false
+                prev_btn.visible = false
+                next_btn.visible = false
+        }
+    }
+
+    Button {
+        id: stop_btn
+        text: "Stop"
+        visible: false
+        anchors.top: parent
+        onClicked: {
+            game.stop()
+            for(var index = 0; index < 64; index++)
+                rep_img_pool.itemAt(index).source = "";
+            stop_btn.visible = false
+            load_btn.visible = true
+            save_btn.visible = false
+            start_btn.visible = true
         }
     }
 
@@ -50,9 +53,8 @@ Window {
         text: "Load"
         anchors.bottom: parent
         onClicked: {
-            if(load_btn.text == "Load")
-            {
-                addButton()
+                prev_btn.visible = true;
+                next_btn.visible = true;
                 game.stop()
                 for(var index = 0; index < 64; index++)
                     rep_img_pool.itemAt(index).source = "";
@@ -60,41 +62,39 @@ Window {
                 for(var index = 0; index < 64; index++)
                     rep_img_pool.itemAt(index).source = game.getImage(index);
                 game.load()
-            }
-            else
-                game.save();
         }
     }
-    Component {
-        id: prev_btn;
-        Button {
-            onClicked: game.prev()
-        }
+
+    Button {
+        id: save_btn
+        x: start_btn.width + 5
+        text: "Save"
+        anchors.bottom: parent
+        visible: false
+        onClicked: game.save();
     }
-    Component {
+
+    Button {
+        id: prev_btn
+        x: load_btn.x + load_btn.width + 5
+        anchors.bottom: main_wnd
+        text: "prev"
+        visible: false
+        onClicked: game.prev()
+    }
+
+    Button {
         id: next_btn;
-        Button {
-            onClicked: game.next()
-        }
+        x: prev_btn.x + prev_btn.width + 5
+        anchors.bottom: main_wnd
+        text: "next"
+        visible: false
+        onClicked: game.next()
     }
+
     function movePiece(fromIndex, toIndex){
         rep_img_pool.itemAt(toIndex).source = rep_img_pool.itemAt(fromIndex).source
         rep_img_pool.itemAt(fromIndex).source = ""
-    }
-
-    function addButton () {
-            var button_prev = prev_btn.createObject(main_wnd,{
-                                                        "x": load_btn.x + load_btn.width + 5,
-                                                        "anchors.bottom": main_wnd,
-                                                        "text": "prev"
-                                                    });
-        if (button_prev.status === button_prev.Ready){
-            var button_next = next_btn.createObject(main_wnd,{
-                                                        "x": button_prev.x + button_prev.width + 5,
-                                                        "anchors.bottom": main_wnd,
-                                                        "text": "next"
-                                                    });
-        }
     }
 
     Grid {
@@ -141,6 +141,7 @@ Window {
              }
         }
     }
+
     Grid {
         id:grid_img_pool
         y: start_btn.height
