@@ -12,6 +12,7 @@ namespace chess
     {
         try
         {
+            m_bWhitePlayer = true;
             m_PieceBox.create();
             BoardFiller(m_Board, m_PieceBox);
             return 0;
@@ -23,9 +24,10 @@ namespace chess
         return -1;
     }
 
-    int Game::load()
+    int Game::stop()
     {
-        return 0;
+        m_Board.release();
+        m_PieceBox.release();
     }
 
     Board &Game::getBoard()
@@ -34,13 +36,9 @@ namespace chess
     }
 
     bool Game::movePiece(const std::string &strFromAddr,
-                         const std::string &strToAddr)
+                         const std::string &strToAddr,
+                         bool bWhitePlayer)
     {
-        if(m_Board.movePiece(strFromAddr, strToAddr, m_bWhitePlayer))
-        {
-            m_bWhitePlayer ^= true;
-            return true;
-        }
-        return false;
+        return m_Board.movePiece(strFromAddr, strToAddr, bWhitePlayer);
     }
 }

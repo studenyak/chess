@@ -15,6 +15,7 @@ namespace chess
         unsigned int create();
         unsigned int count() const;
         const PIECE_POOL& getPool() const;
+        void release();
 
     private:
         PIECE_POOL m_Pool;

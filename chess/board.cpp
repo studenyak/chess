@@ -101,6 +101,11 @@ namespace chess
         return m_PiecePool.size();
     }
 
+    void Board::release()
+    {
+        m_PiecePool.clear();
+    }
+
     const char *Board::indexToAddr(unsigned int nIndex, std::string& strAddr)
     {
         char letter[3] = {'a' + nIndex % 8, '8' - nIndex / 8};

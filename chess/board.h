@@ -23,6 +23,7 @@ namespace chess
         const char *getPieceName(unsigned int nIndex);
         const Piece* barrierOnPath(std::vector<std::string>& path);
         unsigned int count() const;
+        void release();
 
 #ifndef __GOOGLE_TEST__
     private:

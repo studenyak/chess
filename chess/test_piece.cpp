@@ -66,6 +66,21 @@ TEST(Piece, PosToStrAddr)
     strAddr = Pos(4,7);
     EXPECT_STREQ(strAddr.c_str(), "e8");
 }
+TEST(PieceBox, releas)
+{
+    PieceBox pieceBox;
+    pieceBox.create();
+    pieceBox.release();
+    const PIECE_POOL& box = pieceBox.getPool();
+    for(PIECE_POOL::const_iterator it = box.begin();
+        it != box.end();
+        it ++)
+    {
+        Piece* pPiece = it->second;
+        std::cout << "[          ] key: " << it->first << " value: " << pPiece->getName() << std::endl;
+    }
+
+}
 
 
 #endif

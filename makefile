@@ -19,6 +19,8 @@ TEST_OBJS += \
 	${TEST_OBJ_DIR}/piece_box.o\
 	$(TEST_OBJ_DIR)/test_piece.o\
 	$(TEST_OBJ_DIR)/board.o\
+	$(TEST_OBJ_DIR)/pos.o\
+	$(TEST_OBJ_DIR)/move.o\
 	$(TEST_OBJ_DIR)/test_board.o\
 	$(TEST_OBJ_DIR)/board_filler.o
 

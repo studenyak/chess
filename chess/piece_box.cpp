@@ -9,13 +9,7 @@ namespace chess
 
     PieceBox::~PieceBox()
     {
-        for(PIECE_POOL::iterator it = m_Pool.begin();
-            it != m_Pool.end();
-            it++)
-        {
-            if(it->second)
-                delete it->second;
-        }
+        release();
     }
 
     unsigned int PieceBox::create()
@@ -62,6 +56,17 @@ namespace chess
     const PIECE_POOL &PieceBox::getPool() const
     {
         return m_Pool;
+    }
+
+    void PieceBox::release()
+    {
+        for(PIECE_POOL::iterator it = m_Pool.begin();
+            it != m_Pool.end();
+            ++it)
+        {
+            delete it->second;
+        }
+        m_Pool.clear();
     }
 
     unsigned int PieceBox::count() const

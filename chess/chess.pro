@@ -11,7 +11,9 @@ SOURCES += main.cpp \
     game.cpp \
     game_qml.cpp \
     test_board.cpp \
-    piece_qml.cpp
+    piece_qml.cpp \
+    move.cpp \
+    pos.cpp
 
 RESOURCES += qml.qrc
 
@@ -28,7 +30,9 @@ HEADERS += \
     board_filler.h \
     game.h \
     game_qml.h \
-    piece_qml.h
+    piece_qml.h \
+    move.h \
+    pos.h
 
 OTHER_FILES += \
     ../makefile

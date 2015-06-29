@@ -19,6 +19,7 @@ Window {
 
     Game{
         id: game
+        parent: main_wnd
     }
 
     Button {
@@ -34,6 +35,7 @@ Window {
                 load_btn.text = "Save"
             }
             else{
+                game.stop()
                 for(var index = 0; index < 64; index++)
                     rep_img_pool.itemAt(index).source = "";
                 start_btn.text = "Start"
@@ -48,20 +50,41 @@ Window {
         text: "Load"
         anchors.bottom: parent
         onClicked: {
-            addButton()
+            if(load_btn.text == "Load")
+            {
+                addButton()
+                game.stop()
+                for(var index = 0; index < 64; index++)
+                    rep_img_pool.itemAt(index).source = "";
+                game.start()
+                for(var index = 0; index < 64; index++)
+                    rep_img_pool.itemAt(index).source = game.getImage(index);
+                game.load()
+            }
+            else
+                game.save();
         }
     }
     Component {
         id: prev_btn;
-        Button { }
+        Button {
+            onClicked: game.prev()
+        }
     }
     Component {
         id: next_btn;
-        Button { }
+        Button {
+            onClicked: game.next()
+        }
     }
+    function movePiece(fromIndex, toIndex){
+        rep_img_pool.itemAt(toIndex).source = rep_img_pool.itemAt(fromIndex).source
+        rep_img_pool.itemAt(fromIndex).source = ""
+    }
+
     function addButton () {
             var button_prev = prev_btn.createObject(main_wnd,{
-                                                        "x"      : load_btn.x + load_btn.width + 5,
+                                                        "x": load_btn.x + load_btn.width + 5,
                                                         "anchors.bottom": main_wnd,
                                                         "text": "prev"
                                                     });
@@ -105,21 +128,17 @@ Window {
                            rect.border.width = 2;
                         }
                         else {
-                            console.log("move from index " + board.fromIndex + " to " + index)
-                            console.log("piece pos: %d, %d", parent.x, parent.y)
-                          if(game.movePiece(board.fromIndex, index)){
-                              rep_img_pool.itemAt(index).source = rep_img_pool.itemAt(board.fromIndex).source
-                              rep_img_pool.itemAt(board.fromIndex).source = ""
+                           console.log("move from index " + board.fromIndex + " to " + index)
+                           console.log("piece pos: %d, %d", parent.x, parent.y)
+                           if(!game.movePiece(board.fromIndex, index)){
+                               console.log("move is inpossible")
                           }
-                          else
-                              console.log("move is inpossible")
-                            rep.itemAt(board.fromIndex).border.width = 0;
-                            board.fromIndex = -1;
-                          }
+                           rep.itemAt(board.fromIndex).border.width = 0;
+                          board.fromIndex = -1;
+                       }
                       }
                   }
              }
-
         }
     }
     Grid {
@@ -150,3 +169,4 @@ Window {
         }
     }
 }
+
