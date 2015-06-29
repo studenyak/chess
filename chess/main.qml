@@ -20,7 +20,10 @@ Window {
         text: "Start"
         anchors.top: parent
         onClicked: {
+                game.stop()
                 game.start()
+                for(var index = 0; index < 64; index++)
+                    rep_img_pool.itemAt(index).source = "";
                 for(var index = 0; index < 64; index++)
                     rep_img_pool.itemAt(index).source = game.getImage(index);
                 save_btn.visible = true

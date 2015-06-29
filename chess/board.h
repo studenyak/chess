@@ -10,15 +10,13 @@ namespace chess
     {
     public:
         Board();
+        ~Board();
         void setPiecePosition(const std::string& strAddr,
                               const Piece* pPiece);
 
         bool movePiece(const std::string& strFromAddr,
                        const std::string& strToAddr,
                        bool bWhiteTurn = true);
-
-        bool movePiece(unsigned int fromIndex,
-                       unsigned int toIndex);
 
         const char *getPieceName(unsigned int nIndex);
         const Piece* barrierOnPath(std::vector<std::string>& path);

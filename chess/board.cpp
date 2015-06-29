@@ -8,6 +8,11 @@ namespace chess
     {
     }
 
+    Board::~Board()
+    {
+        release();
+    }
+
     void Board::setPiecePosition(const std::string &strAddr,
                                  const Piece* pPiece)
     {
@@ -65,14 +70,6 @@ namespace chess
         return true;
     }
 
-    bool Board::movePiece(unsigned int fromIndex, unsigned int toIndex)
-    {
-
-        std::string str;
-        return movePiece(indexToAddr(fromIndex,str),
-                         indexToAddr(toIndex,str));
-    }
-
     const char *Board::getPieceName(unsigned int nIndex)
     {
         std::string strAddr;
@@ -86,7 +83,7 @@ namespace chess
 
     const Piece *Board::barrierOnPath(std::vector<std::string> &path)
     {
-        for(int i = 0; i < path.size(); i++)
+        for(unsigned int i = 0; i < path.size(); i++)
         {
             std::cout << path[i] << std::endl;
             std::map<std::string, const Piece*>::const_iterator it = m_PiecePool.find(path[i]);

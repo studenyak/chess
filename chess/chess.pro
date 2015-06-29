@@ -12,8 +12,13 @@ SOURCES += main.cpp \
     game_qml.cpp \
     test_board.cpp \
     piece_qml.cpp \
-    move.cpp \
-    pos.cpp
+    pos.cpp \
+    pawn.cpp \
+    queen.cpp \
+    bishop.cpp \
+    king.cpp \
+    knight.cpp \
+    rook.cpp
 
 RESOURCES += qml.qrc
 
@@ -31,8 +36,13 @@ HEADERS += \
     game.h \
     game_qml.h \
     piece_qml.h \
-    move.h \
-    pos.h
+    pos.h \
+    pawn.h \
+    queen.h \
+    bishop.h \
+    king.h \
+    knight.h \
+    rook.h
 
 OTHER_FILES += \
     ../makefile

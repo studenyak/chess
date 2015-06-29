@@ -24,7 +24,7 @@ namespace chess
         return -1;
     }
 
-    int Game::stop()
+    void Game::stop()
     {
         m_Board.release();
         m_PieceBox.release();
