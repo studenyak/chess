@@ -7,6 +7,7 @@ Architecure is devided on 3 layers:
 1. UI (views + controllers) are represented in main.qml
 2. Intermaediate layer for binding qml code with game engine ( files with *_qml.cpp)
 3. Game engine written in c++;
+Game engine was developed using TDD, thats why you will find here also some unittests made with gtest for game-engine.
 
 Note: You can use game engine as a separate module in your application. Once you have notice that the addresses are given in string types
 according to chess rules (a1 is the left bottom corner). This means you have to convert from your address type to a1-type, like
